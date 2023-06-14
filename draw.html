@@ -72,7 +72,7 @@
         function loadHand() {
             $.each(handList, function (index, value) {
                 $('#smg_2').append('<div class="card_hand card">\n' +
-                    '                    <text>' + value + '</text>\n' +
+                    '                    <text class="txt">' + value + '</text>\n' +
                     '                    <div class="rightBtns">\n' +
                     '                        <button class="smallBtn copy_hand" onclick="javascript:copyHand(this)">复制</button>\n' +
                     '                        <button class="smallBtn discard" onclick="javascript:discard(this)">弃</button>\n' +
@@ -87,7 +87,7 @@
         function loadDiscard() {
             $.each(discardList, function (index, value) {
                 $('#smg_3').append(' <div class="card_discard card">\n' +
-                    '                        <text>' + value + '</text>\n' +
+                    '                        <text class="txt">' + value + '</text>\n' +
                     '                        <div class="rightBtns">\n' +
                     '                            <button class="smallBtn copy_hand" onclick="javascript:drawFromDis(this)">摸</button>\n' +
                     '                            <button class="smallBtn discard" onclick="javascript:deleteFromDis(this)">删</button>\n' +
