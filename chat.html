@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天软件</title>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        var chatAreaHtml = '';
+        var datas = [
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "赤，你在变大……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "不过是轻而易举的小事而已"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "好高……比那幢六层的楼还要高……抬起头都看不到赤的脸"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛努力仰望着。"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤半蹲下身，凝视着希洛。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "一只只有巴掌大的小家伙。喜欢这样的我吗？"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "喜欢唔……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛目光偏离，不敢与赤巨大的眼瞳对视。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "（看着赤的大脚爪）"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛摇晃着尾巴，偷偷搓搓爪指，似乎在酝酿着想要说什么。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "我想要……抱抱你的脚爪可以嘛……虽然这样很奇怪……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "当然可以。抱我的脚爪而已，这很正常，你没必要害羞的。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（半跪着，挪了挪前面那只脚爪，让它顶着小希洛）"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤稍微抬起脚爪，露出爪趾下的几团粉色肉垫。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "赤的脚爪好大……比我的身体还大……每一根爪趾都软软的，像一个抱枕一样"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "(抱住赤的一根爪趾)"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛来回摸索着赤的爪趾。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "(抚摸着趾甲)"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "(顺顺爪趾上长长的绒毛)"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "(揉揉大肉垫)"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛脸颊贴近赤的脚爪，鼻子埋在绒毛间，深吸一口。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "都是赤的味道……好棒，我……嗯……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛脸上泛起一丝潮红。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "只是摸着赤的脚爪而已……我，我就……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛胯下的小家伙忍耐不住，支棱起来，让裆部顶起了一个不那么明显的小鼓包。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "小希洛该不会是抱着我的脚爪勃起了吧。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "还不都是因为你……弄得我好难受……想做了……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "我会让你舒舒服服的。"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤轻轻往前推动脚爪。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "唔……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "（像一团毛球一样 被赤的脚爪推倒在地面上）"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛抱紧赤的爪趾，心脏噗噗跳动着。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "真是太好了……看着赤的身体比巨人还高……绒毛比发丝还长，脚爪比小汽车还大……好想……被踩在下面"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "小家伙想的话，那我就要踩下去咯。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（落下一直悬着的脚爪，压在希洛身体上）"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（拇趾和食趾张开一个缝隙，让小家伙能够探出脑袋）"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（两根爪趾把小脑袋像一颗小玻璃球一样夹住）"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "感觉怎么样，亲爱的。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "赤的脚爪……好大，好重……感觉很舒服，一点也不会难受……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "我现在呼吸到的每一口空气，都饱含着赤的气味……哈……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛试着在赤的脚爪下活动身体。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "四面八方而来的压迫感，就像在襁褓里一样……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "（蹭动着腰肢 让帐篷下面的小肉棒顶蹭在爪底）"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "好舒服唔……我好喜欢……就算再重一点也没关系……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（加重了脚爪踩下的力度 让小家伙的身体陷进肉垫里）"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤轻轻在地面上摩擦着脚爪。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（把挺起的小肉棒踩扁到肚皮上 轻轻碾压）"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "呼……哈……就是这种感觉……我被赤完完全全地掌控了……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "肉棒好胀，好痛……好舒服唔……赤的大脚爪……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛疯狂分泌着淫液，打湿了自己的小小内裤。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "如果亲爱的想要的话，我还可以变得更大。"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤调戏地用爪趾捏蹂希洛的脸庞。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "可以有十栋楼那么高嘛"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "一百栋都可以。"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "然后破坏一切……折断高楼，践踏广场，让一切都化作废墟……大家伙……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "这些统统不在话下，瞧好了"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛偷偷亲吻了赤的一根爪趾。"
+            },
+            {
+                "name": "格瑞",
+                "type": 2,
+                "color": "grey",
+                "content": "这样他们就发现不了我了，嘿嘿……可以在黄金视角把他们做的一切都一览无余！"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "格瑞让自己的身体变小，变得和正常兽的一根爪趾一样小。"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "格瑞背着一片叶子，把身体完全藏匿在叶片之下，像小虫子一样爬动着。"
+            },
+            {
+                "name": "格瑞",
+                "type": 2,
+                "color": "grey",
+                "content": "而且变小了，他们看上去就更大了……"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "格瑞藏在叶片下，偷窥着赤和希洛的一举一动。"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "赤的身体以肉眼可见的速度膨胀。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "道路、房屋、树木，一切都在缩小，城市都像是积木搭起来的……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（变得有两百米高 然后低头看看脚爪）"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "好厉害……就像一场奇幻的梦……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "我连赤的一根爪趾都不如了……好重唔……我要呼吸不……唔"
+            },
+            {
+                "name": "",
+                "type": 0,
+                "color": "",
+                "content": "希洛费力地推动着赤的爪趾，以奢求在肉球下面撑开一个空间。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "抱歉，小家伙"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（慌忙挪开脚爪 紧张地看着躺在地上的小家伙）"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "你还好吗？小家伙"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "我没事，大家伙……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "小家伙就像一只小蚂蚁一样"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "可恶……还不是因为赤太大了……（抬头仰望"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "这一大片阴影，难道是……唔……是赤的大包……"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "赤的大包悬在我的头顶……好大，好近……遮天蔽日的大肉球……"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "怎么样，小家伙，很厉害吧。"
+            },
+            {
+                "name": "赤",
+                "type": 1,
+                "color": "red",
+                "content": "（爪子扶着大包，来回摇晃）"
+            },
+            {
+                "name": "希洛",
+                "type": 1,
+                "color": "white",
+                "content": "唔/// 想……想被压在下面……"
+            }
+        ];
+
+        //加载json中的内容
+        function readJson() {
+            var data = datas[0];
+            for (i = 0; i < datas.length; i++) {
+                data = datas[i];
+                //判断类别 0：tips 1：对方说话 2：自己说话
+                if (data.type == 0) {
+                    chatAreaHtml += '<div class="tips">' + data.content + '</div>';
+                } else if (data.type == 1) {
+                    chatAreaHtml += '<div class="chat_other">\n' +
+                        '            <table><tbody>\n' +
+                        '                <tr>\n' +
+                        '                    <td rowspan="2" style="width: 15%; vertical-align: top">\n' +
+                        '                        <div class="headicon '+data.color+'"></div>\n' +
+                        '                    </td>\n' +
+                        '                    <td >\n' +
+                        '                        <div class="name" >'+data.name+'</div>\n' +
+                        '                    </td>\n' +
+                        '                </tr>\n' +
+                        '                <tr>\n' +
+                        '                    <td>\n' +
+                        '                        <div class="arrow_left '+data.color+'_left"></div>\n' +
+                        '                        <div class="chatbox '+data.color+'">'+data.content+'</div>\n' +
+                        '                    </td>\n' +
+                        '                </tr>\n' +
+                        '            </tbody></table>\n' +
+                        '        </div>';
+                } else if (data.type == 2) {
+                    chatAreaHtml += '<div class="chat_me">\n' +
+                        '            <table><tbody>\n' +
+                        '            <tr>\n' +
+                        '                <td >\n' +
+                        '                    <div class="name" >'+data.name+'</div>\n' +
+                        '                </td>\n' +
+                        '                <td rowspan="2" style="width: 15%; vertical-align: top">\n' +
+                        '                    <div class="headicon '+data.color+'"></div>\n' +
+                        '                </td>\n' +
+                        '\n' +
+                        '            </tr>\n' +
+                        '            <tr>\n' +
+                        '                <td>\n' +
+                        '\n' +
+                        '                    <div class="chatbox '+data.color+'">'+data.content+'</div>\n' +
+                        '                    <div class="arrow_right '+data.color+'_right"></div>\n' +
+                        '                </td>\n' +
+                        '            </tr>\n' +
+                        '            </tbody></table>\n' +
+                        '        </div>';
+                }
+            }
+            $('#chat_area').html(chatAreaHtml);
+        }
+
+        $(function () {
+            //调用加载方法
+            readJson();
+
+            //获取屏幕高度和宽度并进行调整
+            var height = $(window).height() - 2;
+            var width = $(window).width();
+            if (height * 0.75 < width) width = height * 0.75;
+
+            //标题字体大小
+            var fontSizeOfTitle = width * 0.07;
+            //var left = ($(window).width() - width) / 2;
+            $('#main').height(height).width(width);
+
+            //对抬头进行设置
+            $('#head').height(0.08 * height).css("line-height", 0.08 * height + 'px');
+            $('#head').css("font-size", fontSizeOfTitle + 'px');
+            $('#chat_area').height(0.92 * height);
+
+            //设置头像大小
+            var headincoDiam = 0.12 * width;
+            /*if (width * 1.8 >= height) {
+                headincoDiam = 0.1 * width;
+            }*/
+            $('.headicon').height(headincoDiam).width(headincoDiam);
+
+            //全局字体大小
+            var globalFontSize = width * 0.04;
+            $('.chatbox').css("font-size", globalFontSize + 'px');
+            $('.tips').css("font-size", globalFontSize * 0.8 + 'px');
+            $('.name').css("font-size", globalFontSize * 0.7 + 'px');
+            $('.name').css("color", "grey").css("marning-left", width * 0.1 + "px");
+
+
+        })
+    </script>
+    <style type="text/css">
+        body {
+            font-size: 0;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #main {
+            background-color: #EAEDF4;
+            border-radius: 8px;
+            margin: 0 auto;
+            padding: 0;
+
+        }
+
+        #head {
+            background-color: #00C0FF;
+            margin: 0 auto;
+            padding: 0;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .headicon {
+            border-radius: 50%;
+            display: inline-block;
+            /*float: left;*/
+        }
+
+        .chatbox {
+            /*background-color: lightsalmon;*/
+            display: inline-block;
+            max-width: 70%;
+            border-radius: 6px;
+            padding: 2%;
+            text-align: left;
+            word-break: break-all;
+            margin-top: 1%;
+        }
+
+        .arrow_left {
+            width: 0px;
+            height: 0px;
+            border: 8px solid transparent;
+            /*border-right-color: lightgrey;*/
+            display: inline-block;
+            margin: 3% 0 0 0;
+            vertical-align: top;
+
+        }
+
+        .arrow_right {
+            width: 0px;
+            height: 0px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent;
+            margin: 3% 0 0 0;
+            /*border-left-color: lightgrey;*/
+            display: inline-block;
+            vertical-align: top;
+
+        }
+
+        .chat_other {
+            margin: 4%;
+        }
+
+        .chat_me {
+            margin: 4%;
+            text-align: right;
+        }
+
+        #chat_area {
+            overflow: auto;
+        }
+
+        .tips {
+            width: 60%;
+            border-radius: 8px;
+            background-color: lightgrey;
+            padding: 2%;
+            margin: 2% auto;
+            color: white;
+        }
+
+        .white {
+            background-color: white;
+        }
+
+        .white_left {
+            border-right-color: white;
+        }
+
+        .white_right {
+            border-left-color: white;
+        }
+
+        .grey {
+            background-color: #D6D6D7;
+        }
+
+        .grey_left {
+            border-right-color: #D6D6D7;
+        }
+
+        .grey_right {
+            border-left-color: #D6D6D7;
+        }
+
+        .red {
+            background-color: #FBB35E;
+        }
+
+        .red_left {
+            border-right-color: #FBB35E;
+        }
+
+        .red_right {
+            border-left-color: #FBB35E;
+        }
+
+        table {
+            width: 100%;
+        }
+
+
+        .name{
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="main">
+    <div id="head">这是标题</div>
+    <div id="chat_area">
+<!--        <div class="chat_other">-->
+<!--            <table><tbody>-->
+<!--                <tr>-->
+<!--                    <td rowspan="2" style="width: 15%; vertical-align: top">-->
+<!--                        <div class="headicon"></div>-->
+<!--                    </td>-->
+<!--                    <td >-->
+<!--                        <div class="name" >赤111111</div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>-->
+<!--                        <div class="arrow_left"></div>-->
+<!--                        <div class="chatbox">我发神经浩老火杀过河裤睡大觉阿</div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody></table>-->
+<!--        </div>-->
+
+<!--        <div class="tips">-->
+<!--            希洛测试了一下。-->
+<!--        </div>-->
+
+<!--        <div class="chat_me">-->
+<!--            <table><tbody>-->
+<!--            <tr>-->
+<!--                <td >-->
+<!--                    <div class="name" >赤111111</div>-->
+<!--                </td>-->
+<!--                <td rowspan="2" style="width: 15%; vertical-align: top">-->
+<!--                    <div class="headicon"></div>-->
+<!--                </td>-->
+
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>-->
+
+<!--                    <div class="chatbox">我发神裤睡大觉阿</div>-->
+<!--                    <div class="arrow_right"></div>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody></table>-->
+<!--        </div>-->
+    </div>
+</div>
+</div>
+
+</div>
+</body>
+</html>

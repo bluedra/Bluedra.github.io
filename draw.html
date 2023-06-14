@@ -1,0 +1,479 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SWORD</title>
+    <script src="jquery.js"></script>
+    <script>
+        //牌堆
+        var deckList = ['打击',
+            '打击',
+            '闪避',
+            '闪避',
+            '蓄力',
+            '测试',
+            '随便写的',
+            '嗯嗯'
+        ];
+
+        //手牌
+        var handList = [];
+
+        //弃牌堆
+        var discardList = [];
+
+        var reg = /[,|，| ]+/;
+
+        $(function () {
+            //加载抽牌堆
+            loadDeck();
+            $('textarea').val(deckList);
+
+            //编辑列表按钮触发事件
+            $('.edit').click(function () {
+                $('#edit_box').show();
+                $('textarea').val(deckList);
+            })
+            $('#yes').click(function () {
+                deckList = $('textarea').val().split(reg);
+                $('#smg_1').html('');
+                loadDeck();
+                $('#edit_box').hide();
+            })
+            $('#no').click(function () {
+                $('#edit_box').hide();
+            })
+
+        });
+
+        //复制牌堆里的一张牌
+        function copyDeck(a) {
+            var b = $(a).parent().prev().text();
+            deckList.push(b);
+            $('#smg_1').html('');
+            loadDeck();
+        }
+
+        //更新牌堆
+        function loadDeck() {
+            $.each(deckList, function (index, value) {
+                $('#smg_1').append('<div class="card_deck card">\n' +
+                    '                    <text class="txt">' + value + '</text>\n' +
+                    '                    <div class="rightBtns">\n' +
+                    '                        <button class="smallBtn copy_deck" onclick="javascript:copyDeck(this)">复制</button>\n' +
+                    '                        <button class="smallBtn draw_it" onclick="javascript:draw(this)">摸</button>\n' +
+                    '                        <button class="smallBtn discard" onclick="javascript:discardFromDeck(this)">弃</button>\n' +
+                    '<input type="hidden" value="' + index + '">' +
+                    '                    </div>\n' +
+                    '                </div>');
+            });
+        }
+
+        //更新手牌
+        function loadHand() {
+            $.each(handList, function (index, value) {
+                $('#smg_2').append('<div class="card_hand card">\n' +
+                    '                    <text>' + value + '</text>\n' +
+                    '                    <div class="rightBtns">\n' +
+                    '                        <button class="smallBtn copy_hand" onclick="javascript:copyHand(this)">复制</button>\n' +
+                    '                        <button class="smallBtn discard" onclick="javascript:discard(this)">弃</button>\n' +
+                    '                        <button class="smallBtn delete" onclick="javascript:deleteFromHand(this)">删</button>\n' +
+                    '<input type="hidden" value="' + index + '">' +
+                    '                    </div>\n' +
+                    '                </div>')
+            })
+        }
+
+        //更新弃牌堆
+        function loadDiscard() {
+            $.each(discardList, function (index, value) {
+                $('#smg_3').append(' <div class="card_discard card">\n' +
+                    '                        <text>' + value + '</text>\n' +
+                    '                        <div class="rightBtns">\n' +
+                    '                            <button class="smallBtn copy_hand" onclick="javascript:drawFromDis(this)">摸</button>\n' +
+                    '                            <button class="smallBtn discard" onclick="javascript:deleteFromDis(this)">删</button>\n' +
+                    '                            <button class="smallBtn delete" onclick="javascript:putFromDis(this)">放回</button>\n' +
+                    '                            <input type="hidden" value="' + index + '">\n' +
+                    '                        </div>\n' +
+                    '                    </div>')
+            })
+        }
+
+
+        //复制一张手牌
+        function copyHand(a) {
+            var b = $(a).parent().prev().text();
+            handList.push(b);
+            $('#smg_2').html('');
+            loadHand();
+        }
+
+        //添加一张牌到手牌
+        function addHand() {
+            var value = $('#new_card').val();
+            if (value == '' || value == null || value == undefined || value == false) {
+                return;
+            }
+            handList.push(value);
+            $('#smg_2').html('');
+            loadHand();
+        }
+
+        //摸一张固定牌到手牌
+        function draw(a) {
+            var b = $(a).parent().prev().text();
+            var index = $(a).next().next().val();
+            handList.push(b);
+            deckList.splice(index, 1);
+            $('#smg_1').html('');
+            $('#smg_2').html('');
+            loadHand();
+            loadDeck();
+        }
+
+        //弃牌
+        function discardFromDeck(a) {
+            var b = $(a).parent().prev().text();
+            var index = $(a).next().val();
+            discardList.push(b);
+            deckList.splice(index, 1);
+            $('#smg_1').html('');
+            $('#smg_3').html('');
+            loadDeck();
+            loadDiscard();
+        }
+
+        function discard(a) {
+            var b = $(a).parent().prev().text();
+            var index = $(a).next().next().val();
+            discardList.push(b);
+            handList.splice(index, 1);
+            $('#smg_2').html('');
+            $('#smg_3').html('');
+            loadHand();
+            loadDiscard();
+        }
+
+        //删牌
+        function deleteFromHand(a) {
+            var index = $(a).next().val();
+            handList.splice(index, 1);
+            $('#smg_2').html('');
+            loadHand();
+        }
+
+        function deleteFromDis(a) {
+            var index = $(a).next().next().val();
+            discardList.splice(index, 1);
+            $('#smg_3').html('');
+            loadDiscard();
+        }
+
+        //从弃牌堆放回牌堆
+        function putFromDis(a) {
+            var b = $(a).parent().prev().text();
+            var index = $(a).next().next().val();
+            deckList.push(b);
+            discardList.splice(index, 1);
+            $('#smg_1').html('');
+            $('#smg_3').html('');
+            loadDeck();
+            loadDiscard();
+        }
+
+        //从弃牌堆摸牌
+        function drawFromDis(a) {
+            var b = $(a).parent().prev().text();
+            var index = $(a).next().next().next().val();
+            handList.push(b);
+            discardList.splice(index, 1);
+            $('#smg_2').html('');
+            $('#smg_3').html('');
+            loadHand();
+            loadDiscard();
+        }
+
+        //抽一张牌
+        function drawRandom() {
+            if (deckList.length == 0) {
+                alert('牌堆的数量不够了！')
+                return;
+            }
+            var length = deckList.length;
+            var index = parseInt(length * Math.random());
+            var b = deckList.splice(index, 1);
+            handList.push(b);
+            $('#smg_1').html('');
+            $('#smg_2').html('');
+            loadHand();
+            loadDeck();
+        }
+
+        //抽X张牌
+        function drawx() {
+            var twice = $('#x').val();
+            var regx = /^[0-9]$/;
+            var isNum = regx.exec(twice);
+            if (isNum) {
+                if (deckList.length < twice) {
+                    alert('牌堆的数量不够了！')
+                    return;
+                }
+                for (var i = 0; i < twice; i++) {
+                    drawRandom();
+                }
+            } else {
+                alert('请输入0~9的数字')
+            }
+        }
+
+        //洗牌
+        function shuffle(){
+            $.each(discardList, function (index, value) {
+                deckList.push(discardList.pop())
+            })
+            $('#smg_1').html('');
+            $('#smg_3').html('');
+            loadDeck();
+            loadDiscard();
+        }
+
+        //弃置所有手牌
+        function disAll(){
+            $.each(handList, function (index, value) {
+                discardList.push(handList.pop())
+            })
+            $('#smg_2').html('');
+            $('#smg_3').html('');
+            loadHand();
+            loadDiscard();
+        }
+
+
+    </script>
+    <style type="text/css">
+        .big {
+            border: 1px solid black;
+            border-radius: 5px;
+            height: 300px;
+            display: inline-block;
+            width: 90%;
+            padding: 1%;
+
+            overflow-y: scroll;
+        }
+
+        .middle {
+            display: inline-block;
+            width: 90%;
+            padding: 1%;
+        }
+
+        button {
+            margin: 5%;
+        }
+
+        .td_a {
+            width: 25%;
+        }
+
+        .td_b {
+            width: 15%;
+        }
+
+        .rightBtns {
+            float: right;
+            width: 55%;
+            text-align: right;
+        }
+
+        .smallBtn {
+            border: 1px solid black;
+            margin: 0;
+            padding: 2px;
+            border-radius: 3px;
+            background-color: white;
+
+        }
+
+        .smallBtn:hover {
+            background-color: lightgrey;
+            cursor: pointer;
+        }
+
+        .card {
+            background-color: #FBB35E;
+            margin-left: 1%;
+            margin-right: 1%;
+            padding: 4px;
+            border-bottom: 1px solid black;
+        }
+
+        div::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        div::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 5px grey;
+            opacity: 0.2;
+            background: fade(@primary-color), 60%;
+        }
+
+        div::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 5px grey;
+            border-radius: 0;
+            background: fade(@primary-color), 30%;
+        }
+
+        .edit {
+            text-align: center;
+            margin: 3px;
+        }
+
+        .tittle {
+            text-align: center;
+
+        }
+
+        #edit_box {
+            border: 1px solid black;
+            width: 40%;
+            height: 40%;
+            text-align: center;
+            border-radius: 3px;
+            margin-left: 30%;
+            margin-top: 15%;
+            margin-right: 0;
+            margin-bottom: 0;
+            display: none;
+            position: absolute;
+            background-color: lightskyblue;
+            z-index: 99;
+            padding-top: 1%;
+        }
+
+        textarea {
+            width: 80%;
+            height: 60%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            resize: none;
+            font-family: "微软雅黑 Light";
+        }
+
+        .txt {
+            display: inline-block;
+            width: 45%;
+        }
+
+        .add {
+            text-align: center;
+            margin: 3px;
+        }
+
+        #new_card {
+            width: 60%;
+        }
+
+        .card_hand {
+            background-color: lightskyblue;
+        }
+
+        .card_discard {
+            background-color: #D6D6D7;
+        }
+
+        .middle {
+            text-align: center;
+        }
+
+        #x {
+            width: 40%;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="edit_box">
+    元素用逗号或空格分割
+    <textarea></textarea><br>
+    <button class="smallBtn" id="yes">确定</button>&nbsp;&nbsp;
+    <button class="smallBtn" id="no">取消</button>
+</div>
+<table>
+    <tr>
+        <td class="tittle">抽牌堆&nbsp;</td>
+        <td class="tittle">手牌&nbsp;&nbsp;</td>
+        <td class="tittle">弃牌堆&nbsp;</td>
+        <td class="tittle"></td>
+    </tr>
+    <tr>
+        <td class="td_a">
+            <div class="big" id="deck">
+                <div class="edit">
+                    <button class="smallBtn edit_list">编辑列表</button>
+                </div>
+                <div id="smg_1">
+                    <!--这里是一行数据-->
+                    <!--<div class="card_deck card">
+                        <text>打击</text>
+                        <div class="rightBtns">
+                            <button class="smallBtn copy_deck">复制</button>
+                            <button class="smallBtn draw_it">摸</button>
+                            <button class="smallBtn discard">弃</button>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </td>
+        <td class="td_a">
+            <div class="big">
+                <div class="add">
+                    <input id="new_card"/>
+                    <button class="smallBtn" id="add_card" onclick="javascript:addHand()">添加</button>
+                </div>
+                <div id="smg_2">
+                    <!--<div class="card_hand card">
+                        <text>打击</text>
+                        <div class="rightBtns">
+                            <button class="smallBtn copy_hand" onclick="javascript:copyHand(this)">复制</button>
+                            <button class="smallBtn discard" onclick="javascript:discard(this)">弃</button>
+                            <button class="smallBtn delete" onclick="javascript:delete(this)">删</button>
+                            <input type="hidden" value="' + index + '">
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </td>
+        <td class="td_a">
+            <div class="big">
+                <div id="smg_3">
+                    <!--<div class="card_discard card">
+                        <text>打击</text>
+                        <div class="rightBtns">
+                            <button class="smallBtn copy_hand" onclick="javascript:drawFromDis(this)">摸</button>
+                            <button class="smallBtn discard" onclick="javascript:delete(this)">删</button>
+                            <button class="smallBtn delete" onclick="javascript:put(this)">放回</button>
+                            <input type="hidden" value="' + index + '">
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </td>
+        <td class="td_b">
+            <div class="middle">
+                <button id="draw" class="smallBtn" onclick="drawRandom()">抽牌</button>
+                <br><br>
+                <button id="removeAllHand" class="smallBtn" onclick="disAll()">弃置所有手牌</button>
+                <br><br>
+                <button id="shuffle" class="smallBtn" onclick="shuffle()">洗牌</button>
+                <br><br>
+                <button id="drawx" class="smallBtn" onclick="drawx()">抽X张</button>
+                <input id="x" type="number" value="5">
+            </div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
